@@ -1,6 +1,6 @@
 import {TelegramBot} from "~/Telegram/TelegramBot";
-import {IncomingMessage, ServerResponse} from "http";
 import {EnvVarsHelper} from "~/Helper/EnvVarsHelper";
+import {Context} from "~/Types/context";
 
 
 export class SendMessageHandler {
@@ -15,7 +15,8 @@ export class SendMessageHandler {
         this.envVarsHelper = envVarsHelper;
     }
 
-    public async handle(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    public async handle(ctx: Context): Promise<void> {
+        const {req, res} = ctx;
         const urlParams = new URL(req.url as string, `http://localhost:4000`);
         const text = urlParams.searchParams.get("text");
 
