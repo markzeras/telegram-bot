@@ -15,4 +15,5 @@ const handlers =  new Handlers(service);
 const router = new Router(handlers);
 
 telegramBot.start();
+telegramBot.initMessageListener(handlers);
 startServer(envVarsHelper.port, router);

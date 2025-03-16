@@ -1,6 +1,6 @@
 import { SendMessageHandler } from "~/Handler/SendMessageHandler";
 import {Handlers} from "~/Handler/Handlers";
-import {Context} from "~/Types/context";
+import {HttpContext} from "~/Types/httpContext";
 
 export class Router {
     private handlers: Handlers;
@@ -9,7 +9,7 @@ export class Router {
         this.handlers = handlers;
     }
 
-    public async handleRequest(ctx: Context) {
+    public async handleRequest(ctx: HttpContext) {
         const { req } = ctx;
         const { url, method } = req;
 

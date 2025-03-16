@@ -1,6 +1,6 @@
 import {IncomingMessage, ServerResponse} from "http";
 
-export type Context = {
+export type HttpContext = {
     req: IncomingMessage,
     res: ServerResponse
 }

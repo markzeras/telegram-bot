@@ -1,4 +1,4 @@
-import {Context} from "~/Types/context";
+import {HttpContext} from "~/Types/httpContext";
 import {MessageService} from "~/Service/MessageService";
 
 
@@ -12,7 +12,7 @@ export class SendMessageHandler {
         this.messageService = messageService;
     }
 
-    public async handle(ctx: Context): Promise<void> {
+    public async handle(ctx: HttpContext): Promise<void> {
         const {req, res} = ctx;
         const urlParams = new URL(req.url as string, `http://localhost:4000`);
         const msgQueryString = urlParams.searchParams.get("msg");

@@ -1,13 +1,13 @@
 import { createServer } from "http";
 import {Router} from "~/Server/Router";
-import {Context} from "~/Types/context";
+import {HttpContext} from "~/Types/httpContext";
 
 export const startServer = async (
     port: string,
     router: Router,
     ) => {
         const server = createServer(async (req, res) => {
-            const ctx = {req, res} as Context;
+            const ctx = {req, res} as HttpContext;
             await router.handleRequest(ctx);
         });
 
