@@ -1,4 +1,5 @@
 import readline from "readline";
+import userData from "users.json";
 
 export const initTerminal = async (bot: any, envVarsHelper: any) => {
     // Initialize the bot with the token from environment variables
@@ -20,7 +21,7 @@ export const initTerminal = async (bot: any, envVarsHelper: any) => {
             process.exit(0);
         }
 
-        await bot.api.sendMessage(envVarsHelper.markUserId, input);
+        await bot.api.sendMessage(userData.users[0].id, input);
         console.log("✅ Message sent!");
         rl.prompt();
     });
