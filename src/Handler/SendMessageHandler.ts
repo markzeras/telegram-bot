@@ -1,35 +1,44 @@
-import {TelegramBot} from "~/Telegram/TelegramBot";
-import {EnvVarsHelper} from "~/Helper/EnvVarsHelper";
 import {Context} from "~/Types/context";
+import {MessageService} from "~/Service/MessageService";
 
 
 export class SendMessageHandler {
     public static readonly path = "/send-message";
     public static readonly method = "GET";
 
-    private telegramBot: TelegramBot;
-    private envVarsHelper: EnvVarsHelper;
+    private readonly messageService: MessageService;
 
-    constructor(telegramBot: TelegramBot, envVarsHelper: EnvVarsHelper) {
-        this.telegramBot = telegramBot;
-        this.envVarsHelper = envVarsHelper;
+    constructor(messageService: MessageService) {
+        this.messageService = messageService;
     }
 
     public async handle(ctx: Context): Promise<void> {
         const {req, res} = ctx;
         const urlParams = new URL(req.url as string, `http://localhost:4000`);
-        const text = urlParams.searchParams.get("text");
+        const msgQueryString = urlParams.searchParams.get("msg");
+        const userIdQueryString = urlParams.searchParams.get("userId");
 
-        if (!text) {
+        if (!msgQueryString) {
             res.writeHead(400);
-            res.end("❌ Missing 'text' query parameter.");
+            res.end("❌ Missing 'msg' query parameter.");
             return;
         }
 
-        await this.telegramBot.sendMessage(this.envVarsHelper.markUserId, text);
+        if (!userIdQueryString) {
+            res.writeHead(400);
+            res.end("❌ Missing 'userId' query parameter.");
+            return;
+        }
+        if (!/^\d+(,\s*\d+)*$/.test(userIdQueryString)) {
+            res.writeHead(400);
+            res.end("❌ Invalid 'userId' query parameter. Must be a comma-separated list of numbers.");
+            return;
+        }
+        const userIds = userIdQueryString.split(",").map(id => parseInt(id.trim(), 10));
+
+        await this.messageService.sendMessage(userIds, msgQueryString);
 
         res.writeHead(200);
         res.end("✅ Message sent!");
     }
 }
-// Extract message from query parameters (e.g., /send-message?text=Hello)

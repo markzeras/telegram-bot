@@ -1,4 +1,5 @@
 import { Bot } from "grammy";
+import {User} from "~/Types/user";
 
 export class TelegramBot {
     private bot: Bot;
@@ -10,16 +11,15 @@ export class TelegramBot {
     public async start(): Promise<void> {
         try {
             await this.bot.start();
-            console.log("✅ Telegram bot started successfully");
         } catch (error) {
             console.error("❌ Error starting Telegram bot:", error);
         }
     }
 
-    public async sendMessage(userId: string, message: string) {
+    public async sendMessage(user: User, message: string) {
         try {
-            await this.bot.api.sendMessage(userId, message);
-            console.log("✅ Message sent to user:", userId);
+            await this.bot.api.sendMessage(user.telegramId, message);
+            console.log("✅ Message sent to user:", user.name);
         } catch (error) {
             console.error("❌ Error sending message:", error);
         }

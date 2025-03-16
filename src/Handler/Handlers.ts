@@ -1,17 +1,12 @@
 import {SendMessageHandler} from "~/Handler/SendMessageHandler";
-import {TelegramBot} from "~/Telegram/TelegramBot";
-import {EnvVarsHelper} from "~/Helper/EnvVarsHelper";
 import {Context} from "~/Types/context";
+import {Service} from "~/Service/Service";
 
 export class Handlers {
-    private readonly telegramBot: any;
-    private readonly envVarsHelper: any;
     public readonly sendMessageHandler: SendMessageHandler;
 
-    constructor(telegramBot: TelegramBot, envVarsHelper: EnvVarsHelper) {
-        this.telegramBot = telegramBot;
-        this.envVarsHelper = envVarsHelper;
-        this.sendMessageHandler = new SendMessageHandler(this.telegramBot, this.envVarsHelper);
+    constructor(service: Service) {
+        this.sendMessageHandler = new SendMessageHandler(service.userService);
     }
 
     public async handleStart(ctx: Context): Promise<void> {
