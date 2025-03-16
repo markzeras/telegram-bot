@@ -24,4 +24,8 @@ export class UserRepository {
   public async getAll(): Promise<User[]> {
       return userData.users as User[];
   }
+
+  public isLiza(user: User): boolean {
+    return user.id === userData.users[1].id;
+  }
 }
