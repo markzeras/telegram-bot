@@ -19,6 +19,9 @@ export class Router {
             await this.handlers.handleStart(ctx);
         } else if (url === "/help" && method === "GET") {
             await this.handlers.handleHelp(ctx);
+        } else if (url === "/ping" && method === "GET") {
+            ctx.res.writeHead(200, { "Content-Type": "text/plain" });
+            ctx.res.end("Pong!");
         } else {
             await this.handlers.handleUnknown(ctx);
         }
